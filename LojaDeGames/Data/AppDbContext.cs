@@ -12,6 +12,7 @@ namespace LojaDeGames.Data
         {
             modelBuilder.Entity<Produto>().ToTable("tb_produto");
             modelBuilder.Entity<Categoria>().ToTable("tb_categoria");
+            modelBuilder.Entity<User>().ToTable("tb_usuarios");
 
             _ = modelBuilder.Entity<Produto>()
                 .HasOne(_ => _.Categoria)
@@ -23,6 +24,7 @@ namespace LojaDeGames.Data
         // Registar um DbSet - Objeto responsável por manipular a tabela
         public DbSet<Produto> Produtos { get; set; } = null!;
         public DbSet<Categoria> Categorias { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
 
         public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
         {

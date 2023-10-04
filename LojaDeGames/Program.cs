@@ -2,10 +2,15 @@
 using FluentValidation;
 using LojaDeGames.Data;
 using LojaDeGames.Model;
+using LojaDeGames.Security.Implements;
+using LojaDeGames.Security;
 using LojaDeGames.Service;
 using LojaDeGames.Service.Implements;
 using LojaDeGames.Validator;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace LojaDeGames
 {
@@ -33,10 +38,31 @@ namespace LojaDeGames
             // Registrar a validação das Entidades
             builder.Services.AddTransient<IValidator<Produto>, ProdutoValidator>();
             builder.Services.AddTransient<IValidator<Categoria>, CategoriaValidator>();
+            builder.Services.AddTransient<IValidator<User>, UserValidator>();
 
             // Regsitrar as classes de serviço (Service)
             builder.Services.AddScoped<IProduto, ProdutoService>();
             builder.Services.AddScoped<ICategoria, CategoriaService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                var key = Encoding.UTF8.GetBytes(Settings.Secret);
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                };
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -72,6 +98,8 @@ namespace LojaDeGames
             }
 
             app.UseCors("MyPolicy");
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

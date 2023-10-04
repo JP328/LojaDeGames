@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 using LojaDeGames.Model;
 using LojaDeGames.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LojaDeGames.Controllers
 {
-    [ApiController]
-    [Route("~/categorias")]
+    [ApiController, Route("~/categorias"), Authorize]
     public class CategoriaController : ControllerBase
     {
         private readonly ICategoria _categoriaService;
