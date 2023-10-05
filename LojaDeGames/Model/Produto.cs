@@ -17,6 +17,9 @@ namespace LojaDeGames.Model
         [Column(TypeName = "varchar"), StringLength(255)]
         public string console { get; set;} = string.Empty;
 
+        [Column(TypeName = "int"), StringLength(255)]
+        public int curtir { get; set; }
+
 
         [Column(TypeName = "date")]
         public DateOnly DataLancamento { get; set; }

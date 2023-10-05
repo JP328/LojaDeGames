@@ -27,6 +27,7 @@ namespace LojaDeGames.Validator
             RuleFor(u => u.DataDeNascimento)
                 .NotEmpty()
                 .Must(BeAValidateAge)
+                //.LessThanOrEqualTo(u => DateOnly.Parse(DateTime.Today.AddYears(-18).ToString()))
                 .WithMessage("Você precisa ser maior de 18 para se cadastrar");
         }
 

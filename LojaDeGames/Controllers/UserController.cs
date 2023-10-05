@@ -88,5 +88,11 @@ namespace LojaDeGames.Controllers
 
             return Ok(Resposta);
         }
+
+        //[Authorize, HttpPut("curtir/{id}")]
+        //public async Task<ActionResult> Curtir (long id)
+        //{
+        //    return await _usuarioService.
+        //}
     }
 }

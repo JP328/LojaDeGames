@@ -78,5 +78,20 @@ namespace LojaDeGames.Service.Implements
 
             return usuario;
         }
+
+        public async Task<Produto?> Curtir(long id)
+        {
+            var Produto = await _context.Produtos
+                .Include(p => p.Categoria)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (Produto is null) 
+                return null;
+
+            Produto.curtir += 1;
+
+            _context.Update(Produto);
+            return Produto;
+        }
     }
 }
